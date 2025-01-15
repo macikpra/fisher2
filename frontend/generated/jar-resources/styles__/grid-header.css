@@ -1,0 +1,3 @@
+:host(.header-color-gray) [part~="header-cell"] {
+    background-color: #ebebeb;
+}

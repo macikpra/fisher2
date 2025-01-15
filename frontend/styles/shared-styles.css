@@ -1,0 +1,311 @@
+/*
+   CSS styling examples for the Vaadin app.
+   Visit https://vaadin.com/docs/flow/theme/theming-overview.html and
+   https://vaadin.com/themes/lumo for more information.
+*/
+
+/* Example: CSS class name to center align the content . */
+.centered-content {
+  margin: 0 auto;
+  max-width: auto;
+}
+
+.multiline-button {
+            width: 250px;
+            word-break: break-word;
+            word-wrap: break-word;
+            white-space: normal;
+            height: 250px;
+        }
+
+.clickedBorder {
+	border: 5px solid green;
+}
+
+ .backgroundImage {
+		background-size: cover;
+		opacity: 0.7;
+	}
+
+.Dashboard-Operational-Change-Weboberflche {
+/*
+  width: 2055px;
+  height: 35px;
+  margin: 27px 311px 64px 91px;
+  font-weight: 100;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.37;
+  letter-spacing: normal;
+*/
+  font-family: Verdana, Arial, Tahoma, Serif; /* LufthansaHead; */
+  font-size: 45px;
+  text-align: left;
+  color: #11193c;
+}
+
+.margin-dashboard {
+	margin: 1px 311px 64px 91px;
+}
+
+.align-right {
+  width: 70%;
+  /*
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  */
+}
+
+.ZUGESTIMMT {
+  width: 150px;
+  height: 28px;
+  /*
+  margin: 0 0 29px;
+  */
+  font-family: LufthansaText;
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 3.06px;
+  text-align: left;
+  color: #8990ad;
+}
+
+.PENDING {
+  width: 103px;
+  height: 28px;
+  /*
+  margin: 0 68px 29px 0;
+  */
+  font-family: LufthansaText;
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 3.06px;
+  text-align: left;
+  color: #8990ad;
+}
+
+.ABGELEHNT {
+  width: 136px;
+  height: 28px;
+  /*
+  margin: 0 35px 29px 0;
+  */
+  font-family: LufthansaText;
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 3.06px;
+  text-align: left;
+  color: #8990ad;
+}
+
+.TBD-OPTION {
+  width: 141px;
+  height: 28px;
+  /*
+  margin: 0 0 66.5px 111.5px;
+  */
+  font-family: LufthansaText;
+  font-size: 20px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: 3.06px;
+  text-align: left;
+  color: #8990ad;
+  white-space: nowrap;
+}
+
+.Linie-dashboard {
+  width: 0;
+  height: 91px;
+  margin: 3.5px 0 0;
+  border: solid 1px #c5c9d7;
+}
+
+.span-counter {
+  width: 41px;
+  height: 37px;
+  /*
+  margin: 29px 130px 0 0;
+  */
+  font-family: Inter;
+  font-size: 37px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.19;
+  letter-spacing: normal;
+  text-align: left;
+  color: #11193c;
+}
+
+.pfeil-nach-oben-gruen {
+  width: 0;
+  height: 0;
+  /*
+  margin: 38px 10px 19px 68px;
+  background-color: #00e38c;
+  */
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+
+  border-bottom: 17px solid #00e38c;
+}
+
+.percentage-gruen {
+  width: 49px;
+  height: 19px;
+  /*
+  margin: 34px 0 13px 10px;
+  */
+  font-family: Inter;
+  font-size: 19px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  text-align: left;
+  color: #00e38c;
+}
+
+.pfeil-nach-unten-rot {
+  width: 0;
+  height: 0;
+  /*
+  margin: 38px 10px 19px 35px;
+  background-color: #ff4b75;
+  */
+  border-left: 17px solid transparent;
+  border-right: 17px solid transparent;
+
+  border-top: 17px solid #ff4b75;
+}
+
+.percentage-rot {
+  width: 49px;
+  height: 19px;
+  /*
+  margin: 34px 0 13px 10px;
+  */
+  font-family: Inter;
+  font-size: 19px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.21;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ff4b75;
+}
+
+.Filteroptionen {
+  width: 156px;
+  height: 33px;
+  margin: 0 176.6px 14.5px 12px;
+  font-family: LufthansaText;
+  font-size: 24px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.38;
+  letter-spacing: 0.58px;
+  text-align: left;
+  color: #333;
+}
+
+
+
+.Rechteck-2 {
+  width: 80px;
+  height: 80px;
+  margin: 0 0 12px;
+  padding: 29px 31px 17.3px 43px;
+  border-radius: 5px;
+  box-shadow: 0 3px 26px 0 rgba(0, 0, 0, 0.11);
+  background-color: #fff;
+}
+
+.header-blue {
+  padding: 8px 9px 9px 24px;
+  background-color: #05164d;
+}
+
+.header-white-font {
+  color: white;
+}
+
+.historie-img-path {
+  width: 64px;
+  height: 64px;
+  margin: 0 8.2px 11.3px 9.9px;
+  padding: 26.2px 11px 8px 22.6px;
+  background-color: #6e8bb7;
+}
+
+
+/* STATUS in UMLAUF */
+.Status-Pending {
+  width: 18.3px;
+  height: 18.3px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #ffbd32;
+}
+
+.Button-Pending {
+  background-color: #ffbd32;
+  color: white;
+}
+
+.Status-Abgelehnt {
+  width: 18.3px;
+  height: 18.3px;
+  background-color: #c00;
+  border-radius: 50%;
+  display: inline-block;
+
+}
+
+.Button-Abgelehnt {
+  background-color: #c00;
+  color: white;
+}
+
+
+.Status-Zugestimmt {
+  width: 18.3px;
+  height: 18.3px;
+  background-color: #417505;
+  border-radius: 50%;
+  display: inline-block;
+
+}
+
+.Button-Zugestimmt {
+  background-color: #417505;
+  color: white;
+}
+
+
+
+vaadin-devmode-gizmo {
+  visibility: hidden;
+}
+
+.mouse-cursor {
+cursor: pointer;
+}
+
+
