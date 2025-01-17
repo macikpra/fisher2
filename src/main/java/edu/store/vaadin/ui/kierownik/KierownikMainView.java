@@ -37,7 +37,6 @@ public class KierownikMainView extends VDiv {
         tabSheet.add("Pracownicy", BeanUtil.createComponent(KierwonikZarzadzaniePracownikTabView.class));
         tabSheet.add("Sklepy", BeanUtil.createComponent(KierwonikZarzadzanieSklepTabView.class));
         tabSheet.add("Statystki", BeanUtil.createComponent(KierwonikZarzadzanieStatystykaTabView.class));
-        tabSheet.add("Sprzet i towar", BeanUtil.createComponent(KierwonikZarzadzanieSprzetTowarTabView.class));
         add(tabSheet);
         tabSheet.setSizeFull();
     }

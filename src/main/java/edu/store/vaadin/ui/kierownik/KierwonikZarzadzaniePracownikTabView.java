@@ -37,8 +37,8 @@ import org.vaadin.firitin.form.AbstractForm;
 public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
 
     private final VGrid<PracownikDto> grid = new VGrid<>(PracownikDto.class);
-    private final VTextField nazwisko = new VTextField("nazwisko");
-    private final VTextField imie = new VTextField("imie");
+    private final VTextField nazwisko = new VTextField("Nazwisko");
+    private final VTextField imie = new VTextField("Imie");
     private final PracownikRepository pracownikRepository;
     private final PracownikRolaRepository pracownikRolaRepository;
 
@@ -54,7 +54,7 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
 
     private PracownikMapper pracownikMapper;
 
-    private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "szukaj", l -> performSearchInGrid());
+    private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "Szukaj", l -> performSearchInGrid());
 
     public KierwonikZarzadzaniePracownikTabView(
         PracownikRepository pracownikRepository,
@@ -132,11 +132,6 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
 
     private void initGrid() {
         grid.setWidthFull();
-        grid.addItemDoubleClickListener(l -> {
-            if (l.getItem() != null) {
-                openPracownikEditor(l.getItem());
-            }
-        });
         Grid.Column<PracownikDto> col = grid
             .addColumn(
                 new ComponentRenderer<>(c -> {

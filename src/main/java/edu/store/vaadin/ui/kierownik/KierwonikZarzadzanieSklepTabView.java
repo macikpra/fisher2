@@ -1,9 +1,16 @@
 package edu.store.vaadin.ui.kierownik;
 
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.TabSheet;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
@@ -18,6 +25,7 @@ import edu.store.vaadin.ui.MainLayout;
 import edu.store.vaadin.ui.common.dialog.DialogTemplate;
 import edu.store.vaadin.ui.common.dialog.ErrorMessageDialog;
 import edu.store.vaadin.ui.editors.sklep.SklepEditor;
+import edu.store.vaadin.ui.services.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.firitin.components.button.VButton;
@@ -32,10 +40,10 @@ import org.vaadin.firitin.form.AbstractForm;
 @Slf4j
 public class KierwonikZarzadzanieSklepTabView extends VDiv {
     private final VGrid<SklepDto> grid = new VGrid<>(SklepDto.class);
-    private final VTextField adres = new VTextField("adres");
+    private final VTextField adres = new VTextField("Adres");
     private final SklepRepository sklepRepository;
     private SklepMapper sklepMapper;
-    private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "szukaj", l -> performSearchInGrid());
+    private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "Szukaj", l -> performSearchInGrid());
     public KierwonikZarzadzanieSklepTabView(
             SklepRepository sklepRepository,
             SklepMapper sklepMapper
@@ -75,19 +83,13 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
     }
     private void initGrid(){
         grid.setWidthFull();
-        grid.addItemDoubleClickListener(l -> {
-            if (l.getItem() != null) {
-                openSklepEditor(l.getItem());
-            }
-        });
         grid.addColumn(
             new ComponentRenderer<>(sklep -> {
-                VButton sprzetButton = new VButton("Sprzet", VaadinIcon.EDIT.create(), clickEvent -> checkMagazine());
-                VButton towarButton = new VButton("Towar", VaadinIcon.EDIT.create(), clickEvent -> checkMagazine());
-                return new VHorizontalLayout(sprzetButton, towarButton);
+                VButton checkButton = new VButton("Sprawdz", VaadinIcon.EDIT.create(), clickEvent -> checkMagazyn(sklep));
+                return checkButton;
             })
         )
-        .setHeader("Zamowienia")
+        .setHeader("Stan magazynu")
         .setAutoWidth(true);
         grid.addColumn(
             new ComponentRenderer<>(sklep -> {
@@ -164,7 +166,15 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
         selectAllFromDb();
         log.info("Sklep with ID {} deleted", sklepDto.getId());
     }
-    private void checkMagazine(){
-
+    private void checkMagazyn(SklepDto sklepDto){
+        DialogTemplate dlg = new DialogTemplate(
+                "Magazyn sklepu " + sklepDto.getAdres()
+        );
+        TabSheet tabSheet = new TabSheet();
+        tabSheet.setSizeFull();
+        tabSheet.add("Sprzet", BeanUtil.createComponent(KierwonikZarzadzanieSprzetTabView.class));
+        tabSheet.add("Towar",BeanUtil.createComponent(KierwonikZarzadzanieTowarTabView.class));
+        dlg.addContent(tabSheet);
+        dlg.open();
     }
 }
