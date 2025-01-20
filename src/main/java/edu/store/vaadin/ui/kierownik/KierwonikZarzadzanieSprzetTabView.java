@@ -5,7 +5,9 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import edu.store.database.entities.CfgRole;
+import edu.store.database.entities.TypSprzetu;
 import edu.store.database.repositories.SprzetRepository;
+import edu.store.database.repositories.TypSprzetuRepository;
 import edu.store.model.dto.SklepDto;
 import edu.store.model.dto.SprzetDto;
 import edu.store.model.mapper.SprzetMapper;
@@ -17,27 +19,38 @@ import org.vaadin.firitin.components.html.VDiv;
 import org.vaadin.firitin.components.orderedlayout.VHorizontalLayout;
 import org.vaadin.firitin.components.textfield.VTextField;
 
+import java.util.List;
+
 public class KierwonikZarzadzanieSprzetTabView extends VDiv {
     private final VGrid<SprzetDto> grid = new VGrid<>(SprzetDto.class);
     private final VTextField nazwa = new VTextField("Nazwa");
     private final SprzetRepository sprzetRepository;
     private final SprzetMapper sprzetMapper;
-    private final VComboBox<CfgRole> rodzajCbx = new VComboBox<>("Rodzaj");
+    private final TypSprzetuRepository typSprzetuRepository;
+    private final VComboBox<TypSprzetu> rodzaj = new VComboBox<>("Rodzaj");
     private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "Szukaj", l -> performSearchInGrid());
     SklepDto sklepDto;
     public KierwonikZarzadzanieSprzetTabView(
             SprzetRepository sprzetRepository,
-            SprzetMapper sprzetMapper
+            SprzetMapper sprzetMapper,
+            TypSprzetuRepository typSprzetuRepository
     ) {
         this.sprzetRepository = sprzetRepository;
         this.sprzetMapper = sprzetMapper;
+        this.typSprzetuRepository = typSprzetuRepository;
         this.sklepDto = UI.getCurrent().getSession().getAttribute(SklepDto.class);
         setSizeFull();
         getElement().getStyle().set("overflow", "auto");
         VButton addSprzet = new VButton(VaadinIcon.PLUS.create(), l -> openSprzetEditor(new SprzetDto()));
         VButton refresh = new VButton(VaadinIcon.REFRESH.create(), l -> selectAllFromDb());
+        List<TypSprzetu> typSprzetuList = typSprzetuRepository.findAll();
+        TypSprzetu typSprzetu = new TypSprzetu("Wszystko",0L);
+        typSprzetuList.add(0,typSprzetu);
+        rodzaj.setItemLabelGenerator(TypSprzetu::getNazwa);
+        rodzaj.setItems(typSprzetuList);
+        rodzaj.setValue(typSprzetu);
         add(
-            new VHorizontalLayout( nazwa,rodzajCbx, buttonSearch, refresh, addSprzet)
+            new VHorizontalLayout( nazwa,rodzaj, buttonSearch, refresh, addSprzet)
                 .withSpacing(true)
                 .withPadding(false)
                 .withMargin(false)

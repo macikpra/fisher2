@@ -134,7 +134,7 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
         .setSortable(true)
         .setHeader("Rola pracownika");
         col.setId("Rola");
-        grid.removeColumnByKey("haslo_hash");
+
         grid.addColumn(
             new ComponentRenderer<>(pracownik -> {
                 VButton editButton = new VButton("Edytuj", VaadinIcon.EDIT.create(), clickEvent -> openPracownikEditor(pracownik));

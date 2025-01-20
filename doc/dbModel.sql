@@ -634,8 +634,8 @@ ALTER SEQUENCE public.towar_id_seq OWNER TO fisher_admin;
 ALTER SEQUENCE public.towar_id_seq OWNED BY public.towar.id;
 
 CREATE TABLE public.typ_towaru (
-                                   id integer NOT NULL,
-                                   nazwa character varying(255)
+   id integer NOT NULL,
+   nazwa character varying(255)
 );
 
 -- Set the owner of the table

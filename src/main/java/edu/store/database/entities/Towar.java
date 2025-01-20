@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "towar", schema = "public")
-@NamedQuery(name = "Towar.findAll", query = "SELECT u FROM Sklep u")
+@NamedQuery(name = "Towar.findAll", query = "SELECT u FROM Towar u")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @ToString(exclude = {})
