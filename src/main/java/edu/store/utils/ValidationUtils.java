@@ -22,6 +22,8 @@ public class ValidationUtils {
     }
 
     public static boolean hasRole(String role) {
+        System.out.println("Roles for user: " +
+                securityService.getAuthenticatedUser().getAuthorities());
         return (
             StringUtils.isNotBlank(role) &&
             securityService

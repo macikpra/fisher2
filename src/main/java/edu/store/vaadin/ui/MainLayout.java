@@ -88,6 +88,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createNormalUserNavigationView(VDiv div) {
+        System.out.println("Checking role for store_user: " + hasRole("store_user"));
         if (!hasRole("store_user")) {
             System.out.println("nie jest normal user!");
             return;
@@ -107,6 +108,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createKierownikNavigationView(VDiv div) {
+        System.out.println("Checking role for kierownik: " + hasRole("kierownik"));
         if (!hasRole("kierownik")) {
             return;
         }
@@ -125,6 +127,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void createSprzedawcaNavigationView(VDiv div) {
+        System.out.println("Checking role for sprzedawca: " + hasRole("sprzedawca"));
         if (!hasRole("sprzedawca")) {
             return;
         }

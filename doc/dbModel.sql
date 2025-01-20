@@ -533,7 +533,9 @@ ALTER SEQUENCE public.sprzedaz_id_seq OWNED BY public.sprzedaz.id;
 CREATE TABLE public.sprzet (
     id integer NOT NULL,
     sklep_id bigint NOT NULL,
-    typ_sprzetu_id bigint NOT NULL
+    nazwa text NOT NULL,
+    typ_sprzetu bigint NOT NULL,
+    cena float NOT NULL
 );
 
 
@@ -600,7 +602,11 @@ ALTER SEQUENCE public.sprzet_wyporzyczenie_id_seq OWNED BY public.sprzet_wyporzy
 
 CREATE TABLE public.towar (
     id integer NOT NULL,
-    sklep_id bigint NOT NULL
+    sklep_id bigint NOT NULL,
+    nazwa text NOT NULL,
+    typ_towaru bigint NOT NULL,
+    ilosc bigint NOT NULL,
+    cena float NOT NULL
 );
 
 
@@ -627,6 +633,26 @@ ALTER SEQUENCE public.towar_id_seq OWNER TO fisher_admin;
 
 ALTER SEQUENCE public.towar_id_seq OWNED BY public.towar.id;
 
+CREATE TABLE public.typ_towaru (
+                                   id integer NOT NULL,
+                                   nazwa character varying(255)
+);
+
+-- Set the owner of the table
+ALTER TABLE public.typ_towaru OWNER TO fisher_admin;
+
+-- Create a sequence for the `id` column
+CREATE SEQUENCE public.typ_towaru_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+-- Assign the sequence to the `id` column
+ALTER SEQUENCE public.typ_towaru_id_seq OWNER TO fisher_admin;
+
+ALTER SEQUENCE public.typ_towaru_id_seq OWNED BY public.typ_towaru.id;
 
 --
 -- Name: typ_sprzetu; Type: TABLE; Schema: public; Owner: fisher_admin

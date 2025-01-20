@@ -29,7 +29,7 @@ public class KierownikMainView extends VDiv {
         getElement().getStyle().set("overflow", "auto");
         setSizeFull();
 
-        if (!hasRole("Kierownik")) {
+        if (!hasRole("kierownik")) {
             return;
         }
 

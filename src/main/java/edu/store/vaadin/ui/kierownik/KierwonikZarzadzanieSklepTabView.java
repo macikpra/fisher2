@@ -1,25 +1,16 @@
 package edu.store.vaadin.ui.kierownik;
 
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabSheet;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import edu.store.database.repositories.PracownikRepository;
 import edu.store.database.repositories.SklepRepository;
-import edu.store.model.dto.PracownikDto;
 import edu.store.model.dto.SklepDto;
-import edu.store.model.mapper.PracownikMapper;
 import edu.store.model.mapper.SklepMapper;
 import edu.store.vaadin.ui.MainLayout;
 import edu.store.vaadin.ui.common.dialog.DialogTemplate;
@@ -42,7 +33,7 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
     private final VGrid<SklepDto> grid = new VGrid<>(SklepDto.class);
     private final VTextField adres = new VTextField("Adres");
     private final SklepRepository sklepRepository;
-    private SklepMapper sklepMapper;
+    private final SklepMapper sklepMapper;
     private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "Szukaj", l -> performSearchInGrid());
     public KierwonikZarzadzanieSklepTabView(
             SklepRepository sklepRepository,
@@ -84,10 +75,7 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
     private void initGrid(){
         grid.setWidthFull();
         grid.addColumn(
-            new ComponentRenderer<>(sklep -> {
-                VButton checkButton = new VButton("Sprawdz", VaadinIcon.EDIT.create(), clickEvent -> checkMagazyn(sklep));
-                return checkButton;
-            })
+            new ComponentRenderer<>(sklep -> new VButton("Sprawdz", VaadinIcon.EDIT.create(), clickEvent -> checkMagazyn(sklep)))
         )
         .setHeader("Stan magazynu")
         .setAutoWidth(true);
@@ -144,9 +132,7 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
         editor.getResetButton().setEnabled(true);
         editor
                 .getResetButton()
-                .addClickListener(l -> {
-                    dlg.close();
-                });
+                .addClickListener(l -> dlg.close());
         editor.getSaveButton().setEnabled(true);
         editor.getDeleteButton().setVisible(false);
         dlg.addContent(editor);
@@ -167,6 +153,7 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
         log.info("Sklep with ID {} deleted", sklepDto.getId());
     }
     private void checkMagazyn(SklepDto sklepDto){
+        UI.getCurrent().getSession().setAttribute(SklepDto.class, sklepDto);
         DialogTemplate dlg = new DialogTemplate(
                 "Magazyn sklepu " + sklepDto.getAdres()
         );

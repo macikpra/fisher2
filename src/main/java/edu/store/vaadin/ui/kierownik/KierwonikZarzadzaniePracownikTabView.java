@@ -22,7 +22,6 @@ import edu.store.vaadin.ui.editors.pracownik.PracownikEditor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vaadin.firitin.components.button.VButton;
 import org.vaadin.firitin.components.grid.VGrid;
 import org.vaadin.firitin.components.html.VSpan;
@@ -43,16 +42,9 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
     private final PracownikRolaRepository pracownikRolaRepository;
 
     private final CfgRoleRepository cfgRoleRepository;
-
-    private final CfgUserRepository cfgUserRepository;
-
-    private final CfgUserRoleMapRepository cfgUserRoleMapRepository;
-
     private final CfgUserService cfgUserService;
 
-    private final PasswordEncoder passwordEncoder;
-
-    private PracownikMapper pracownikMapper;
+    private final PracownikMapper pracownikMapper;
 
     private final VButton buttonSearch = new VButton(VaadinIcon.SEARCH.create(), "Szukaj", l -> performSearchInGrid());
 
@@ -60,18 +52,12 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
         PracownikRepository pracownikRepository,
         PracownikRolaRepository pracownikRolaRepository,
         CfgRoleRepository cfgRoleRepository,
-        PasswordEncoder passwordEncoder,
-        CfgUserRepository cfgUserRepository,
-        CfgUserRoleMapRepository cfgUserRoleMapRepository,
         CfgUserService cfgUserService,
         PracownikMapper pracownikMapper
     ) {
         this.pracownikRepository = pracownikRepository;
         this.pracownikRolaRepository = pracownikRolaRepository;
         this.cfgRoleRepository = cfgRoleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.cfgUserRepository = cfgUserRepository;
-        this.cfgUserRoleMapRepository = cfgUserRoleMapRepository;
         this.cfgUserService = cfgUserService;
         this.pracownikMapper = pracownikMapper;
 
@@ -133,20 +119,20 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
     private void initGrid() {
         grid.setWidthFull();
         Grid.Column<PracownikDto> col = grid
-            .addColumn(
-                new ComponentRenderer<>(c -> {
-                    PracownikRola pracownikRola = pracownikRolaRepository.findByPracownikId(c.getId());
-                    if (pracownikRola != null && pracownikRola.getCfgRoleId() != null) {
-                        CfgRole role = cfgRoleRepository.findOneById(pracownikRola.getCfgRoleId());
-                        VSpan label = new VSpan(role.getName());
-                        return new VHorizontalLayout(label);
-                    }
-                    VSpan label = new VSpan("Rola nieznana");
+        .addColumn(
+            new ComponentRenderer<>(c -> {
+                PracownikRola pracownikRola = pracownikRolaRepository.findByPracownikId(c.getId());
+                if (pracownikRola != null && pracownikRola.getCfgRoleId() != null) {
+                    CfgRole role = cfgRoleRepository.findOneById(pracownikRola.getCfgRoleId());
+                    VSpan label = new VSpan(role.getName());
                     return new VHorizontalLayout(label);
-                })
-            )
-            .setSortable(true)
-            .setHeader("Rola pracownika");
+                }
+                VSpan label = new VSpan("Rola nieznana");
+                return new VHorizontalLayout(label);
+            })
+        )
+        .setSortable(true)
+        .setHeader("Rola pracownika");
         col.setId("Rola");
         grid.removeColumnByKey("haslo_hash");
         grid.addColumn(
@@ -212,9 +198,7 @@ public class KierwonikZarzadzaniePracownikTabView extends VVerticalLayout {
         editor.getResetButton().setEnabled(true);
         editor
             .getResetButton()
-            .addClickListener(l -> {
-                dlg.close();
-            });
+            .addClickListener(l -> dlg.close());
         editor.getSaveButton().setEnabled(true);
         editor.getDeleteButton().setVisible(false);
         dlg.addContent(editor);
