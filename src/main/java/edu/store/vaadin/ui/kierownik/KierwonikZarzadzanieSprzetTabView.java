@@ -2,7 +2,9 @@ package edu.store.vaadin.ui.kierownik;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import edu.store.database.entities.CfgRole;
 import edu.store.database.entities.TypSprzetu;
@@ -11,6 +13,10 @@ import edu.store.database.repositories.TypSprzetuRepository;
 import edu.store.model.dto.SklepDto;
 import edu.store.model.dto.SprzetDto;
 import edu.store.model.mapper.SprzetMapper;
+import edu.store.vaadin.ui.common.dialog.DialogTemplate;
+import edu.store.vaadin.ui.common.dialog.ErrorMessageDialog;
+import edu.store.vaadin.ui.editors.sprzet.SprzetEditor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.vaadin.firitin.components.button.VButton;
 import org.vaadin.firitin.components.combobox.VComboBox;
@@ -18,9 +24,11 @@ import org.vaadin.firitin.components.grid.VGrid;
 import org.vaadin.firitin.components.html.VDiv;
 import org.vaadin.firitin.components.orderedlayout.VHorizontalLayout;
 import org.vaadin.firitin.components.textfield.VTextField;
+import org.vaadin.firitin.form.AbstractForm;
 
 import java.util.List;
 
+@Slf4j
 public class KierwonikZarzadzanieSprzetTabView extends VDiv {
     private final VGrid<SprzetDto> grid = new VGrid<>(SprzetDto.class);
     private final VTextField nazwa = new VTextField("Nazwa");
@@ -60,12 +68,40 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
         selectAllFromDb();
     }
     private void performSearchInGrid() {
-        if(isNazwaEntered()){
-
+        if(isNazwaEntered() && isRodzajChosen()){
+            log.info("in search for both name and type");
+            grid.setItems(
+                sprzetRepository
+                .findByNazwaContainingIgnoreCaseAndTypSprzetuAndSklepId(nazwa.getValue(),rodzaj.getValue().getId(),sklepDto.getId())
+                .stream()
+                .map(sprzetMapper::toDto)
+                .toList()
+            );
+        }else if(isNazwaEntered()){
+            log.info("in search for name");
+            grid.setItems(
+                sprzetRepository
+                .findByNazwaContainingIgnoreCaseAndSklepId(nazwa.getValue(),sklepDto.getId())
+                .stream()
+                .map(sprzetMapper::toDto)
+                .toList()
+            );
+        }else if(isRodzajChosen()) {
+            log.info("in search for typ");
+            grid.setItems(
+                sprzetRepository
+                .findByTypSprzetuAndSklepId(rodzaj.getValue().getId(),sklepDto.getId())
+                .stream()
+                .map(sprzetMapper::toDto)
+                .toList()
+            );
         }
     }
     private boolean isNazwaEntered() {
         return !StringUtils.isEmpty(nazwa.getValue()) && nazwa.getValue().length() >= 3;
+    }
+    private boolean isRodzajChosen() {
+        return rodzaj.getValue() != null && rodzaj.getValue().getNazwa().equals("Wszystko");
     }
     private void initGrid() {
         grid.setWidthFull();
@@ -93,11 +129,60 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
         nazwa.setValue("");
     }
     private void openSprzetEditor(SprzetDto sprzetDto) {
-
+        DialogTemplate dlg = new DialogTemplate(
+                sprzetDto.getId() == null ? "Dodaj nowy sprzet" : "Modyfikuj dane sprzetu"
+        );
+        SprzetEditor editor = new SprzetEditor();
+        editor.setSavedHandler(
+            (AbstractForm.SavedHandler<SprzetDto>) sprzetDtoHandler -> {
+                BinderValidationStatus<SprzetDto> status = editor.getBinder().validate();
+                if (!status.isOk()) {
+                    Notification.show(
+                        "Proszę sprawdzić dane - nie wszystkie pola są wypełnione poprawnie!",
+                        3000,
+                        Notification.Position.MIDDLE
+                    );
+                }  else {
+                    try {
+                        entrySaved(sprzetDtoHandler);
+                        dlg.close();
+                    } catch (Exception ex) {
+                        log.error("Error: " + ex.getMessage(), ex);
+                        ErrorMessageDialog emd = new ErrorMessageDialog(
+                            ex,
+                            "Prosimy o zapoznanie się z listą błędów i przesłanie jej do administratora"
+                        );
+                        emd.open();
+                    }
+                }
+            }
+        );
+        editor.setResetHandler(
+            (AbstractForm.ResetHandler<SprzetDto>) investorDto ->
+                log.info("user have closed window without saving their data....")
+        );
+        editor.setEntity(sprzetDto);
+        editor.getResetButton().setEnabled(true);
+        editor.getResetButton()
+                .addClickListener(l -> dlg.close());
+        editor.getSaveButton().setEnabled(true);
+        editor.getDeleteButton().setVisible(false);
+        dlg.addContent(editor);
+        dlg.open();
+    }
+    private void entrySaved(SprzetDto clone) {
+        log.info("entrySaved for {}....{}", SprzetDto.class.getSimpleName(), clone);
+        SprzetDto managed = sprzetMapper.toDto(sprzetRepository.save(sprzetMapper.toEntity(clone)));
+        log.info("Sklep saved: {}", managed);
+        selectAllFromDb();
     }
     private void deleteSprzet(SprzetDto sprzetDto) {
+        log.info("Deleting Sklep: {}", sprzetDto);
+        sprzetRepository.deleteById(sprzetDto.getId());
+        selectAllFromDb();
+        log.info("Sklep with ID {} deleted", sprzetDto.getId());
     }
-    private void zamow(SprzetDto sprzet) {
+    private void zamow(SprzetDto sprzetDto) {
 
     }
 }

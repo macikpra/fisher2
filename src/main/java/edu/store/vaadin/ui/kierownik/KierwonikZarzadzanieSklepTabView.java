@@ -59,7 +59,7 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
     }
     private void performSearchInGrid(){
         if(isAdresEntered()){
-            log.info("Searching for adres containing: " + adres.getValue());
+            log.info("Searching for adres containing: {}", adres.getValue());
             grid.setItems(
                     sklepRepository
                             .findByAdresContainingIgnoreCase(adres.getValue())
@@ -101,46 +101,44 @@ public class KierwonikZarzadzanieSklepTabView extends VDiv {
         );
         SklepEditor editor = new SklepEditor();
         editor.setSavedHandler(
-                (AbstractForm.SavedHandler<SklepDto>) sklepDtoHandler -> {
-                    BinderValidationStatus<SklepDto> status = editor.getBinder().validate();
-                    if (!status.isOk()) {
-                        Notification.show(
-                                "Proszę sprawdzić dane - nie wszystkie pola są wypełnione poprawnie!",
-                                3000,
-                                Notification.Position.MIDDLE
-                        );
-                    }  else {
-                        try {
-                            entrySaved(sklepDtoHandler, editor);
-                            dlg.close();
-                        } catch (Exception ex) {
-                            log.error("Error: " + ex.getMessage(), ex);
-                            ErrorMessageDialog emd = new ErrorMessageDialog(
-                                    ex,
-                                    "Prosimy o zapoznanie się z listą błędów i przesłanie jej do administratora"
-                            );
-                            emd.open();
-                        }
-                    }
+            (AbstractForm.SavedHandler<SklepDto>) sklepDtoHandler -> {
+            BinderValidationStatus<SklepDto> status = editor.getBinder().validate();
+            if (!status.isOk()) {
+                Notification.show(
+                    "Proszę sprawdzić dane - nie wszystkie pola są wypełnione poprawnie!",
+                    3000,
+                    Notification.Position.MIDDLE
+                );
+            }  else {
+                try {
+                    entrySaved(sklepDtoHandler);
+                    dlg.close();
+                } catch (Exception ex) {
+                    log.error("Error: {}", ex.getMessage(), ex);
+                    ErrorMessageDialog emd = new ErrorMessageDialog(
+                        ex,
+                        "Prosimy o zapoznanie się z listą błędów i przesłanie jej do administratora"
+                    );
+                    emd.open();
                 }
+            }
+            }
         );
         editor.setResetHandler(
-                (AbstractForm.ResetHandler<SklepDto>) investorDto ->
-                        log.info("user have closed window without saving their data....")
+            (AbstractForm.ResetHandler<SklepDto>) investorDto ->
+                log.info("user have closed window without saving their data....")
         );
         editor.setEntity(sklepDto);
         editor.getResetButton().setEnabled(true);
-        editor
-                .getResetButton()
-                .addClickListener(l -> dlg.close());
+        editor.getResetButton()
+              .addClickListener(l -> dlg.close());
         editor.getSaveButton().setEnabled(true);
         editor.getDeleteButton().setVisible(false);
         dlg.addContent(editor);
         dlg.open();
-
     }
 
-    private void entrySaved(SklepDto clone, SklepEditor editor) {
+    private void entrySaved(SklepDto clone) {
         log.info("entrySaved for {}....{}", SklepDto.class.getSimpleName(), clone);
         SklepDto managed = sklepMapper.toDto(sklepRepository.save(sklepMapper.toEntity(clone)));
         log.info("Sklep saved: {}", managed);

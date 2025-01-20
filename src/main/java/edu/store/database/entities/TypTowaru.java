@@ -24,6 +24,7 @@ public class TypTowaru implements Serializable {
     @SequenceGenerator(name = "TypTowaruGen", sequenceName = "typ_towaru_id_seq", schema = "public", allocationSize = 1)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "nazwa")
     String nazwa;
     public TypTowaru(String nazwa, Long id) {

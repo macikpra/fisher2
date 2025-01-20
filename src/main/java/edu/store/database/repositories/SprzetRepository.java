@@ -12,4 +12,9 @@ public interface SprzetRepository extends JpaRepository<Sprzet, Long> {
     List<Sprzet> findAll();
     @Query("SELECT r FROM Sprzet r WHERE r.sklepId = :sklepId ORDER BY r.id ASC")
     List<Sprzet> findBySklepId(@Param("sklepId") Long sklepId);
+
+    List<Sprzet> findByNazwaContainingIgnoreCaseAndTypSprzetuAndSklepId(String nazwa, Long typSprzetu,Long sklepId);
+    List<Sprzet> findByNazwaContainingIgnoreCaseAndSklepId(String nazwa, Long sklepId);
+    List<Sprzet> findByTypSprzetuAndSklepId(Long typSprzetu, Long sklepId);
+
 }

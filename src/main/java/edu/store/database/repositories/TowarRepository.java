@@ -12,4 +12,8 @@ public interface TowarRepository extends JpaRepository<Towar, Long> {
     List<Towar> findAll();
     @Query("SELECT r FROM Towar r WHERE r.sklepId = :sklepId ORDER BY r.id ASC")
     List<Towar> findBySklepId(@Param("sklepId") Long sklepId);
+
+    List<Towar> findByNazwaContainingIgnoreCaseAndTypTowaruAndSklepId(String nazwa, Long typTowaru, Long sklepId);
+    List<Towar> findByNazwaContainingIgnoreCaseAndSklepId(String nazwa, Long sklepId);
+    List<Towar> findByTypTowaruAndSklepId(Long typTowaru, Long sklepId);
 }
