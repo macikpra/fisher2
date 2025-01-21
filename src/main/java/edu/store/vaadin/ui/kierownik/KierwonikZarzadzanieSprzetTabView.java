@@ -7,6 +7,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.data.binder.BinderValidationStatus;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import edu.store.database.entities.CfgRole;
+import edu.store.database.entities.Sprzet;
 import edu.store.database.entities.TypSprzetu;
 import edu.store.database.repositories.SprzetRepository;
 import edu.store.database.repositories.TypSprzetuRepository;
@@ -172,6 +173,7 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
     }
     private void entrySaved(SprzetDto clone) {
         log.info("entrySaved for {}....{}", SprzetDto.class.getSimpleName(), clone);
+        Sprzet sprzetEntity = new Sprzet();
         SprzetDto managed = sprzetMapper.toDto(sprzetRepository.save(sprzetMapper.toEntity(clone)));
         log.info("Sklep saved: {}", managed);
         selectAllFromDb();

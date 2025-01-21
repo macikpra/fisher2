@@ -74,6 +74,10 @@ public class SprzetEditor extends AbstractForm<SprzetDto> {
                 entity.setTypSprzetu(selectedTyp.getId());
             }
         });
+        TypSprzetu selectedTyp = typ.getValue();
+        if (selectedTyp != null) {
+            entity.setTypSprzetu(selectedTyp.getId());
+        }
         BeanValidationBinder<SprzetDto> entityBinder = new BeanValidationBinder<>(SprzetDto.class);
         entityBinder.forField(nazwa).asRequired().bind(SprzetDto::getNazwa, SprzetDto::setNazwa);
         entityBinder.forField(cena).asRequired()

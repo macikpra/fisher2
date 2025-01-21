@@ -79,6 +79,10 @@ public class TowarEditor extends AbstractForm<TowarDto> {
                 entity.setTypTowaru(selectedTyp.getId());
             }
         });
+        TypTowaru selectedTyp = typ.getValue();
+        if (selectedTyp != null) {
+            entity.setTypTowaru(selectedTyp.getId());
+        }
         BeanValidationBinder<TowarDto> entityBinder = new BeanValidationBinder<>(TowarDto.class);
         entityBinder.forField(nazwa).asRequired().bind(TowarDto::getNazwa, TowarDto::setNazwa);
         entityBinder.forField(cena).asRequired()

@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+
 public interface TowarRepository extends JpaRepository<Towar, Long> {
     @Query("SELECT r FROM Towar r ORDER BY r.id ASC")
     List<Towar> findAll();
