@@ -19,8 +19,12 @@ import edu.store.vaadin.ui.services.BeanUtil;
 import edu.store.vaadin.ui.sprzedawca.SprzedawcaMainView;
 import edu.store.vaadin.ui.store_user.NormalStoreUserView;
 import java.io.Serial;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.vaadin.firitin.components.html.VDiv;
 import org.vaadin.firitin.components.html.VLabel;
 import org.vaadin.firitin.components.orderedlayout.VVerticalLayout;
@@ -39,12 +43,26 @@ public class MainLayout extends AppLayout {
         createHeader();
         createDrawer();
     }
+    public void printAuthorities(UserDetails userDetails) {
+        // Get the authorities granted to the user
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
+        // Loop through the authorities and print each one
+        if (authorities != null && !authorities.isEmpty()) {
+            System.out.println("Granted Authorities:");
+            for (GrantedAuthority authority : authorities) {
+                System.out.println(authority.getAuthority());
+            }
+        } else {
+            System.out.println("No authorities granted to this user.");
+        }
+    }
     private void createHeader() {
         VLabel logo = new VLabel("Student Zone - Najlepsza aplikacja wędkarska w kraju i nie tylko...").withFullWidth();
         logo.addClassNames("header-white-font", LumoUtility.FontSize.LARGE, LumoUtility.Margin.MEDIUM);
 
         String u = securityService.getAuthenticatedUser().getUsername();
+        printAuthorities(securityService.getAuthenticatedUser());
         Button logout = new Button("Wyloguj " + u, e -> {
             System.out.println("1: is user logged in: " + SecurityUtils.isUserLoggedIn());
             System.out.println("1: user detials: " + SecurityUtils.getUserDetails());

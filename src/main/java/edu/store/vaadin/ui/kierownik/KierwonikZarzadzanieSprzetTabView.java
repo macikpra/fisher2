@@ -114,7 +114,7 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
             quantities.put(sprzetDto, 1); // Default quantity is 1
             orderGrid.setItems(quantities.keySet()); // Refresh the grid's items
         } else {
-            Notification.show("Sprzet jest juz na liscie", 2000, Notification.Position.MIDDLE);
+            Notification.show("Sprzęt jest już na liście", 2000, Notification.Position.MIDDLE);
         }
     }
     private void reject(){
@@ -126,7 +126,7 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
             quantities.remove(sprzetDto);
             orderGrid.setItems(quantities.keySet());
         } else {
-            Notification.show("Tego sprzetu nie ma na liscie", 2000, Notification.Position.MIDDLE);
+            Notification.show("Tego sprzętu nie ma na liście", 2000, Notification.Position.MIDDLE);
         }
     }
     private void incItem(SprzetDto sprzetDto) {
@@ -139,7 +139,7 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
             quantities.put(sprzetDto, currentQuantity - 1);
             orderGrid.getDataProvider().refreshAll();
         } else {
-            Notification.show("Nie moze byc mniejsze niz 1", 2000, Notification.Position.MIDDLE);
+            Notification.show("Nie może byc mniejsze niz 1", 2000, Notification.Position.MIDDLE);
         }
     }
     private void initSecondGrid() {
@@ -153,7 +153,7 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
                         Integer newQuantity = Integer.parseInt(event.getValue());
                         quantities.put(item, newQuantity);
                     } catch (NumberFormatException e) {
-                        Notification.show("Prosze podac poprawna ilosc", 2000, Notification.Position.MIDDLE);
+                        Notification.show("Prosze podać poprawną ilość", 2000, Notification.Position.MIDDLE);
                     }
                 });
                 return textField;
@@ -240,7 +240,7 @@ public class KierwonikZarzadzanieSprzetTabView extends VDiv {
     }
     private void openSprzetEditor(SprzetDto sprzetDto) {
         DialogTemplate dlg = new DialogTemplate(
-                sprzetDto.getId() == null ? "Dodaj nowy sprzet" : "Modyfikuj dane sprzetu"
+                sprzetDto.getId() == null ? "Dodaj nowy sprzęt" : "Modyfikuj dane sprzętu"
         );
         SprzetEditor editor = new SprzetEditor();
         editor.setSavedHandler(
